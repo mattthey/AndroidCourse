@@ -1,5 +1,6 @@
 package com.github.task2
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,6 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    companion object IntentCreator {
+        const val NUMBER = "number"
+        fun createIntent(packageContext: Context, number: Int): Intent {
+            val intent = Intent(packageContext, MainActivity::class.java)
+            intent.putExtra(NUMBER, number)
+            return intent
+        }
+    }
+
     private val tag = this.javaClass.simpleName
     private var number = 0
 
@@ -17,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        number = savedInstanceState?.getInt(Constants.NUMBER)
-            ?: intent?.getIntExtra(Constants.NUMBER, 0)
+        number = savedInstanceState?.getInt(NUMBER)
+            ?: intent?.getIntExtra(NUMBER, 0)
             ?: 0
         Log.d(tag, "onCreate, number=$number")
         updateNumberTextOnView()
@@ -26,19 +36,19 @@ class MainActivity : AppCompatActivity() {
         val switchToSquareActivityButton = findViewById<Button>(R.id.switch_to_square_activity_button)
         switchToSquareActivityButton.setOnClickListener {
             val intent = Intent(this, SquareActivity::class.java)
-            intent.putExtra(Constants.NUMBER, number)
+            intent.putExtra(NUMBER, number)
             startActivity(intent)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         Log.d(tag, "onSaveInstanceState, number=$number")
-        outState.putInt(Constants.NUMBER, number)
+        outState.putInt(NUMBER, number)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        number = savedInstanceState.getInt(Constants.NUMBER)
+        number = savedInstanceState.getInt(NUMBER)
         Log.d(tag, "onRestoreInstanceState, number=$number")
         updateNumberTextOnView()
         super.onRestoreInstanceState(savedInstanceState)

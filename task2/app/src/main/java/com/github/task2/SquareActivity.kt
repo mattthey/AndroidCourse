@@ -1,6 +1,5 @@
 package com.github.task2
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -18,13 +17,12 @@ class SquareActivity : AppCompatActivity() {
 
         squareTextView = findViewById(R.id.square_text_view)
 
-        val number = intent.getIntExtra(Constants.NUMBER, 0)
+        val number = intent.getIntExtra(MainActivity.NUMBER, 0)
         squareTextView.text = (number * number).toString()
 
         val switchToMainActivityButton = findViewById<Button>(R.id.switch_to_main_activity_button)
         switchToMainActivityButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(Constants.NUMBER, number)
+            val intent = MainActivity.createIntent(this, number)
             startActivity(intent)
         }
     }
