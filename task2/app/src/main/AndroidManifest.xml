@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.task2"
         tools:targetApi="31" >
+        <!-- дописать на изменения каких конфигураций нужно реагировать-->
         <activity
             android:name=".MainActivity"
             android:exported="true"

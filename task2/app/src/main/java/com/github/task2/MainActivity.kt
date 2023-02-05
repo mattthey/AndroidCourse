@@ -15,13 +15,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(tag, "onCreate")
         setContentView(R.layout.activity_main)
 
         number = savedInstanceState?.getInt(Constants.NUMBER)
-            ?: if (intent != null)
-                intent.getIntExtra(Constants.NUMBER, 0)
-            else 0
+            ?: intent?.getIntExtra(Constants.NUMBER, 0)
+            ?: 0
+        Log.d(tag, "onCreate, number=$number")
         updateNumberTextOnView()
 
         val switchToSquareActivityButton = findViewById<Button>(R.id.switch_to_square_activity_button)
@@ -30,6 +29,19 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(Constants.NUMBER, number)
             startActivity(intent)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d(tag, "onSaveInstanceState, number=$number")
+        outState.putInt(Constants.NUMBER, number)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        number = savedInstanceState.getInt(Constants.NUMBER)
+        Log.d(tag, "onRestoreInstanceState, number=$number")
+        updateNumberTextOnView()
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun updateNumberTextOnView() {
